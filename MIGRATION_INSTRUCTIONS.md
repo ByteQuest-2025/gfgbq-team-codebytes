@@ -59,3 +59,5 @@ If you still see errors after applying the migration:
 3. Check that your Supabase connection is working properly
 4. Ensure you have the correct permissions to modify the database schema
 
+
+

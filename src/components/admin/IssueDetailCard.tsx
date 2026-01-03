@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, Building2, Tag, X, AlertCircle } from "lucide-react";
+import { MapPin, Calendar, Building2, Tag, X, AlertCircle, Download, Image as ImageIcon, FileText } from "lucide-react";
 import { format } from "date-fns";
 
 interface Issue {
@@ -77,8 +77,26 @@ const IssueDetailCard = ({ issue, onClose }: IssueDetailCardProps) => {
     : "Date not available";
 
   return (
-    <Card className="w-full max-w-md shadow-2xl border-2 bg-background">
-      <CardHeader className="pb-3">
+    <div className="relative">
+      {/* Pointer/Arrow pointing to marker */}
+      <div 
+        className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0"
+        style={{
+          borderLeft: "12px solid transparent",
+          borderRight: "12px solid transparent",
+          borderTop: "12px solid hsl(var(--border))",
+        }}
+      />
+      <div 
+        className="absolute -bottom-[1px] left-1/2 transform -translate-x-1/2 w-0 h-0"
+        style={{
+          borderLeft: "11px solid transparent",
+          borderRight: "11px solid transparent",
+          borderTop: "11px solid hsl(var(--background))",
+        }}
+      />
+      <Card className="w-full shadow-2xl border-2 bg-background rounded-lg overflow-hidden">
+        <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="text-xl font-bold text-foreground pr-4">
             {issue.title}
@@ -162,18 +180,77 @@ const IssueDetailCard = ({ issue, onClose }: IssueDetailCardProps) => {
         {/* File Attachment */}
         {issue.file_url && (
           <div className="pt-2 border-t">
-            <a
-              href={issue.file_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm text-primary hover:underline flex items-center gap-2"
-            >
-              <span>View Attachment</span>
-            </a>
+            <p className="text-sm font-medium text-muted-foreground mb-2">Attachment</p>
+            {(() => {
+              const fileUrl = issue.file_url;
+              const fileExtension = fileUrl.split('.').pop()?.toLowerCase();
+              const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(fileExtension || '');
+              
+              if (isImage) {
+                return (
+                  <div className="space-y-2">
+                    <a
+                      href={fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block"
+                    >
+                      <img
+                        src={fileUrl}
+                        alt="Issue attachment"
+                        className="w-full rounded-lg border border-border max-h-64 object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                        onError={(e) => {
+                          // Fallback if image fails to load
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `
+                              <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                </svg>
+                                <a href="${fileUrl}" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Download Attachment</a>
+                              </div>
+                            `;
+                          }
+                        }}
+                      />
+                    </a>
+                    <a
+                      href={fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline flex items-center gap-2"
+                    >
+                      <ImageIcon className="w-4 h-4" />
+                      <span>View Full Image</span>
+                    </a>
+                  </div>
+                );
+              } else {
+                return (
+                  <a
+                    href={fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline flex items-center gap-2 p-2 rounded-md hover:bg-muted transition-colors"
+                  >
+                    {fileExtension === 'pdf' ? (
+                      <FileText className="w-4 h-4" />
+                    ) : (
+                      <Download className="w-4 h-4" />
+                    )}
+                    <span>Download {fileExtension?.toUpperCase() || 'Attachment'}</span>
+                  </a>
+                );
+              }
+            })()}
           </div>
         )}
       </CardContent>
     </Card>
+    </div>
   );
 };
 

@@ -89,3 +89,5 @@
 
 All Lovable branding and icon sources have been completely removed. The application will now use the browser's default blank globe icon in the tab. No UI components or styles were modified - only backend/configuration changes were made.
 
+
+

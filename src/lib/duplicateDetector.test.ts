@@ -164,3 +164,5 @@ export function calculateExampleDistance(): void {
   console.log(`Within 30m radius: ${distance <= 30}`);
 }
 
+
+

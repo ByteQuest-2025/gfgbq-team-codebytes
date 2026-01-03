@@ -36,3 +36,5 @@ FROM public.issues
 GROUP BY issue_type, priority
 ORDER BY issue_type, priority;
 
+
+

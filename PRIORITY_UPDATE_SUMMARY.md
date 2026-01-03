@@ -135,3 +135,5 @@ To verify everything works:
 - All official portal views now properly display priority from the database
 - The urgent issues count in HomeTab now uses the priority field instead of hardcoded issue types
 
+
+

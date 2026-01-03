@@ -91,6 +91,7 @@ const IssueMap = ({ issues, height = "500px" }: IssueMapProps) => {
   const markersRef = useRef<L.Marker[]>([]);
   const [mapError, setMapError] = useState<string | null>(null);
   const [selectedIssue, setSelectedIssue] = useState<Issue | null>(null);
+  const [cardPosition, setCardPosition] = useState<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
     // Wait for DOM to be ready
@@ -207,16 +208,34 @@ const IssueMap = ({ issues, height = "500px" }: IssueMapProps) => {
               closeButton: true
             });
             
-            // Add click event to show detailed card
+            // Add click event to show detailed card on map (Google Maps style)
             marker.on("click", (e) => {
-              if (e.originalEvent) {
+              if (e.originalEvent && mapRef.current) {
                 e.originalEvent.stopPropagation();
                 e.originalEvent.preventDefault();
+                
+                // Close popup if open
+                marker.closePopup();
+                
+                // Get marker's screen position
+                const markerPoint = mapRef.current.latLngToContainerPoint([issue.latitude!, issue.longitude!]);
+                
+                // Calculate card position (above the marker, centered)
+                const cardWidth = 400; // Approximate card width
+                const cardHeight = 300; // Approximate card height
+                const x = markerPoint.x - cardWidth / 2;
+                const y = markerPoint.y - cardHeight - 50; // Position above marker
+                
+                // Ensure card stays within map bounds
+                const mapBounds = mapContainerRef.current?.getBoundingClientRect();
+                if (mapBounds) {
+                  const adjustedX = Math.max(10, Math.min(x, mapBounds.width - cardWidth - 10));
+                  const adjustedY = Math.max(10, Math.min(y, mapBounds.height - cardHeight - 10));
+                  
+                  setCardPosition({ x: adjustedX, y: adjustedY });
+                  setSelectedIssue(issue);
+                }
               }
-              // Close popup if open
-              marker.closePopup();
-              // Show detailed card
-              setSelectedIssue(issue);
             });
             
             markersRef.current.push(marker);
@@ -236,14 +255,40 @@ const IssueMap = ({ issues, height = "500px" }: IssueMapProps) => {
         }
       }
 
-      // Close card when clicking on map (not on marker)
+      // Close card when clicking on map (not on marker) or when map moves
       if (mapRef.current) {
         mapRef.current.off("click"); // Remove any existing handlers
+        mapRef.current.off("move"); // Remove any existing move handlers
+        
         mapRef.current.on("click", (e) => {
-          // Only close if clicking directly on the map, not on a marker
+          // Only close if clicking directly on the map, not on a marker or card
           const target = e.originalEvent?.target as HTMLElement;
-          if (target && !target.closest(".leaflet-marker-icon")) {
+          if (target && 
+              !target.closest(".leaflet-marker-icon") && 
+              !target.closest(".issue-detail-card")) {
             setSelectedIssue(null);
+            setCardPosition(null);
+          }
+        });
+        
+        // Update card position when map moves/zooms
+        mapRef.current.on("move", () => {
+          if (selectedIssue && selectedIssue.latitude && selectedIssue.longitude && mapRef.current) {
+            const markerPoint = mapRef.current.latLngToContainerPoint([
+              selectedIssue.latitude,
+              selectedIssue.longitude
+            ]);
+            const cardWidth = 400;
+            const cardHeight = 300;
+            const x = markerPoint.x - cardWidth / 2;
+            const y = markerPoint.y - cardHeight - 50;
+            
+            const mapBounds = mapContainerRef.current?.getBoundingClientRect();
+            if (mapBounds) {
+              const adjustedX = Math.max(10, Math.min(x, mapBounds.width - cardWidth - 10));
+              const adjustedY = Math.max(10, Math.min(y, mapBounds.height - cardHeight - 10));
+              setCardPosition({ x: adjustedX, y: adjustedY });
+            }
           }
         });
       }
@@ -256,14 +301,18 @@ const IssueMap = ({ issues, height = "500px" }: IssueMapProps) => {
     return () => {
       if (mapRef.current) {
         try {
+          mapRef.current.off("click");
+          mapRef.current.off("move");
           mapRef.current.remove();
         } catch (err) {
           console.error("Error cleaning up map:", err);
         }
         mapRef.current = null;
       }
+      setSelectedIssue(null);
+      setCardPosition(null);
     };
-  }, [issues]);
+  }, [issues, selectedIssue]);
 
   if (mapError) {
     return (
@@ -296,15 +345,26 @@ const IssueMap = ({ issues, height = "500px" }: IssueMapProps) => {
           border: "1px solid hsl(var(--border))",
         }}
       />
-      {/* Detailed Issue Card Overlay */}
-      {selectedIssue && (
+      {/* Detailed Issue Card Overlay - Google Maps Style */}
+      {selectedIssue && cardPosition && (
         <div 
-          className="absolute top-4 right-4 z-[1000] max-h-[calc(100%-2rem)] overflow-y-auto w-full max-w-md px-4"
+          className="absolute z-[1000] issue-detail-card"
+          style={{
+            left: `${cardPosition.x}px`,
+            top: `${cardPosition.y}px`,
+            maxWidth: "400px",
+            width: "90vw",
+            maxHeight: "70vh",
+            pointerEvents: "auto",
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           <IssueDetailCard
             issue={selectedIssue}
-            onClose={() => setSelectedIssue(null)}
+            onClose={() => {
+              setSelectedIssue(null);
+              setCardPosition(null);
+            }}
           />
         </div>
       )}

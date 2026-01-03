@@ -16,7 +16,7 @@ import { ArrowLeft, Upload, X, FileText, Image, File, Loader2, MapPin } from "lu
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { assignPriority } from "@/lib/priorityAssigner";
+import { assignPriority } from "@/lib/priorityMapper";
 import { checkForDuplicates } from "@/lib/duplicateDetector";
 
 const issueTypes = [

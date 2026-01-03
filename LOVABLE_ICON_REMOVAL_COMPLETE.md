@@ -220,3 +220,5 @@ After clearing cache and restarting:
 
 The `lovable-tagger` package in `node_modules` and `package.json` is a **development tool only** and does NOT affect the favicon. It's used for component tagging during development and has no impact on the browser tab icon.
 
+
+

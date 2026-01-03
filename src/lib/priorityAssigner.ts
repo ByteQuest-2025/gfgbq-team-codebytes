@@ -22,13 +22,18 @@ export type PriorityLevel = "Urgent" | "High Priority" | "Medium Priority" | "Lo
 /**
  * Issue Type to Priority Mapping
  * Fixed, deterministic mapping as per requirements
+ * 
+ * PRIORITY ASSIGNMENT RULES:
+ * - Priority is assigned ONCE at report time based ONLY on Issue Type
+ * - Stored in database and automatically reflected in all official portals
+ * - No recalculation needed after initial assignment
  */
 const ISSUE_TYPE_PRIORITY_MAP: Record<IssueType, PriorityLevel> = {
   "Public Safety": "Urgent",
-  "Road & Infrastructure": "Urgent",
   "Utilities": "High Priority",
   "Sanitation": "High Priority",
   "Environmental": "High Priority",
+  "Road & Infrastructure": "Medium Priority",
   "Noise Complaint": "Medium Priority",
   "Parks & Recreation": "Low Priority",
   "Other": "Low Priority",

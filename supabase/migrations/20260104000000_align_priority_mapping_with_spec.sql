@@ -1,7 +1,8 @@
--- Update Priority Mapping: Road & Infrastructure → Urgent
--- This migration updates the priority function and fixes all existing issues
+-- Align Priority Mapping with Specification
+-- Road & Infrastructure should be "Medium Priority" (not "Urgent")
+-- This migration updates the database function and existing data
 
--- Update the get_default_priority function
+-- Update the get_default_priority function to match specification
 CREATE OR REPLACE FUNCTION public.get_default_priority(_issue_type TEXT)
 RETURNS TEXT
 LANGUAGE plpgsql
@@ -10,10 +11,10 @@ AS $$
 BEGIN
   RETURN CASE _issue_type
     WHEN 'Public Safety' THEN 'Urgent'
-    WHEN 'Road & Infrastructure' THEN 'Urgent'
     WHEN 'Utilities' THEN 'High Priority'
     WHEN 'Sanitation' THEN 'High Priority'
     WHEN 'Environmental' THEN 'High Priority'
+    WHEN 'Road & Infrastructure' THEN 'Medium Priority'  -- Updated from Urgent
     WHEN 'Noise Complaint' THEN 'Medium Priority'
     WHEN 'Parks & Recreation' THEN 'Low Priority'
     WHEN 'Other' THEN 'Low Priority'
@@ -22,26 +23,24 @@ BEGIN
 END;
 $$;
 
--- Update ALL existing Road & Infrastructure issues to Urgent priority
+-- Update existing Road & Infrastructure issues to Medium Priority
 UPDATE public.issues
-SET priority = 'Urgent'
-WHERE issue_type = 'Road & Infrastructure'
-  AND (priority IS NULL OR priority != 'Urgent');
+SET priority = 'Medium Priority'
+WHERE issue_type = 'Road & Infrastructure' 
+  AND priority = 'Urgent';
 
--- Update ALL existing issues with correct priority based on their issue_type
--- This ensures all issues have the correct priority according to the new mapping
+-- Update any issues with NULL priority based on their issue_type
 UPDATE public.issues
 SET priority = public.get_default_priority(issue_type)
-WHERE priority IS NULL OR priority != public.get_default_priority(issue_type);
+WHERE priority IS NULL;
 
--- Ensure the trigger function uses the updated mapping
+-- Update the trigger function to use the corrected mapping
 CREATE OR REPLACE FUNCTION public.set_default_priority()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
 BEGIN
-  -- Always set priority based on issue_type to ensure consistency
-  IF NEW.issue_type IS NOT NULL THEN
+  IF NEW.priority IS NULL THEN
     NEW.priority := public.get_default_priority(NEW.issue_type);
   END IF;
   RETURN NEW;
@@ -52,18 +51,18 @@ $$;
 DO $$
 DECLARE
   road_infrastructure_count INTEGER;
-  urgent_count INTEGER;
+  medium_priority_count INTEGER;
 BEGIN
   SELECT COUNT(*) INTO road_infrastructure_count
   FROM public.issues
   WHERE issue_type = 'Road & Infrastructure';
   
-  SELECT COUNT(*) INTO urgent_count
+  SELECT COUNT(*) INTO medium_priority_count
   FROM public.issues
-  WHERE issue_type = 'Road & Infrastructure' AND priority = 'Urgent';
+  WHERE issue_type = 'Road & Infrastructure' AND priority = 'Medium Priority';
   
   RAISE NOTICE 'Road & Infrastructure issues: %', road_infrastructure_count;
-  RAISE NOTICE 'Road & Infrastructure issues with Urgent priority: %', urgent_count;
+  RAISE NOTICE 'Road & Infrastructure issues with Medium Priority: %', medium_priority_count;
 END $$;
 
 

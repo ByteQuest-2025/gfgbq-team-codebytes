@@ -196,3 +196,5 @@ const DUPLICATE_DETECTION_RADIUS_METERS = 30; // Change this value
 - The check is performed before database insertion
 - Distance calculations use the Haversine formula for accuracy
 
+
+
