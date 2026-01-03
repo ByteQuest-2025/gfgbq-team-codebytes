@@ -1,16 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import MetricsCard from "./MetricsCard";
+import IssueMap from "./IssueMap";
+import ErrorBoundary from "./ErrorBoundary";
 
 interface Issue {
   id: string;
   title: string;
+  description?: string;
   status: string;
   issue_type: string;
+  priority: string | null;
   latitude?: number | null;
   longitude?: number | null;
+  location_address?: string | null;
   assigned_zone?: string | null;
   assigned_department?: string | null;
+  created_at?: string;
+  file_url?: string | null;
 }
 
 interface HomeTabProps {
@@ -22,7 +29,7 @@ const HomeTab = ({ issues }: HomeTabProps) => {
   const resolvedCount = issues.filter(i => i.status === "resolved").length;
   const resolutionRate = totalReports > 0 ? Math.round((resolvedCount / totalReports) * 100) : 0;
   const urgentIssues = issues.filter(i => 
-    i.issue_type === "pothole" || i.issue_type === "water"
+    i.priority === "Urgent"
   ).length;
 
   return (
@@ -85,8 +92,16 @@ const HomeTab = ({ issues }: HomeTabProps) => {
           <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
           <CardTitle className="text-sm font-medium">Interactive Issue Tracker</CardTitle>
         </CardHeader>
-        <CardContent className="h-64 bg-muted/30 rounded-lg flex items-center justify-center">
-          <p className="text-muted-foreground">Map view coming soon...</p>
+        <CardContent className="p-0">
+          <ErrorBoundary
+            fallback={
+              <div className="h-[500px] bg-muted/30 rounded-lg flex items-center justify-center">
+                <p className="text-muted-foreground">Map failed to load. Please refresh the page.</p>
+              </div>
+            }
+          >
+            <IssueMap issues={issues} height="500px" />
+          </ErrorBoundary>
         </CardContent>
       </Card>
 

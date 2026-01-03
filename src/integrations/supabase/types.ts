@@ -58,6 +58,9 @@ export type Database = {
           assigned_department: string | null
           assigned_to: string | null
           assigned_zone: string | null
+          auto_classified: boolean | null
+          classification_confidence: number | null
+          classification_explanation: string | null
           created_at: string
           description: string
           file_url: string | null
@@ -66,6 +69,7 @@ export type Database = {
           latitude: number | null
           location_address: string | null
           longitude: number | null
+          priority: string | null
           status: string
           title: string
           updated_at: string
@@ -76,6 +80,9 @@ export type Database = {
           assigned_department?: string | null
           assigned_to?: string | null
           assigned_zone?: string | null
+          auto_classified?: boolean | null
+          classification_confidence?: number | null
+          classification_explanation?: string | null
           created_at?: string
           description: string
           file_url?: string | null
@@ -84,6 +91,7 @@ export type Database = {
           latitude?: number | null
           location_address?: string | null
           longitude?: number | null
+          priority?: string | null
           status?: string
           title: string
           updated_at?: string
@@ -94,6 +102,9 @@ export type Database = {
           assigned_department?: string | null
           assigned_to?: string | null
           assigned_zone?: string | null
+          auto_classified?: boolean | null
+          classification_confidence?: number | null
+          classification_explanation?: string | null
           created_at?: string
           description?: string
           file_url?: string | null
@@ -102,6 +113,7 @@ export type Database = {
           latitude?: number | null
           location_address?: string | null
           longitude?: number | null
+          priority?: string | null
           status?: string
           title?: string
           updated_at?: string

@@ -17,6 +17,7 @@ interface Issue {
   description: string;
   issue_type: string;
   status: string;
+  priority: string | null;
   location_address: string | null;
   latitude: number | null;
   longitude: number | null;

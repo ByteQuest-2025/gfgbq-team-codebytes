@@ -16,6 +16,8 @@ import { ArrowLeft, Upload, X, FileText, Image, File, Loader2, MapPin } from "lu
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { assignPriority } from "@/lib/priorityAssigner";
+import { checkForDuplicates } from "@/lib/duplicateDetector";
 
 const issueTypes = [
   "Road & Infrastructure",
@@ -203,8 +205,8 @@ const ReportIssue = () => {
         }
       }
 
-      // Insert issue into database
-      const { error } = await supabase.from('issues').insert({
+      // Prepare issue data
+      const issueData: any = {
         user_id: user.id,
         title: formData.title.trim(),
         description: formData.description.trim(),
@@ -213,11 +215,57 @@ const ReportIssue = () => {
         latitude: location.latitude,
         longitude: location.longitude,
         location_address: location.address,
-      });
+      };
+
+      // Duplicate Detection: Check for similar issues at the same location
+      if (location.latitude && location.longitude && formData.issueType) {
+        const duplicateCheck = await checkForDuplicates(
+          formData.issueType,
+          location.latitude,
+          location.longitude
+        );
+
+        if (duplicateCheck.isDuplicate && duplicateCheck.duplicateIssues.length > 0) {
+          const closestDuplicate = duplicateCheck.duplicateIssues[0];
+          const duplicateMessage = `Duplicate detected: A similar "${formData.issueType}" issue was reported ${closestDuplicate.distance}m away. Status: ${closestDuplicate.status}. Do you want to proceed anyway?`;
+          
+          // Show warning but allow user to proceed
+          toast.warning("Possible Duplicate Issue", {
+            description: duplicateMessage,
+            duration: 5000,
+          });
+          
+          console.warn("Duplicate detected:", duplicateCheck);
+        }
+      }
+
+      // Assign priority based on issue type (deterministic mapping)
+      // Priority is assigned strictly based on the selected issue type
+      if (formData.issueType) {
+        const priority = assignPriority(formData.issueType);
+        issueData.priority = priority;
+        console.log(`Priority assigned: ${formData.issueType} → ${priority}`);
+      } else {
+        // If no issue type selected, default to Low Priority
+        issueData.priority = "Low Priority";
+      }
+
+      // Insert issue into database
+      let { error } = await supabase.from('issues').insert(issueData);
+
+      // If insert failed and it might be due to missing priority column, retry without it
+      if (error && (error.message?.includes('column') || error.message?.includes('does not exist'))) {
+        console.warn('Retrying insert without priority field (migration may not be applied)');
+        const { priority, ...issueDataWithoutPriority } = issueData;
+        const retryResult = await supabase.from('issues').insert(issueDataWithoutPriority);
+        error = retryResult.error;
+      }
 
       if (error) {
         console.error('Insert error:', error);
-        toast.error('Failed to submit issue. Please try again.');
+        // Show more detailed error message
+        const errorMessage = error.message || 'Failed to submit issue. Please try again.';
+        toast.error(errorMessage);
         setIsSubmitting(false);
         return;
       }

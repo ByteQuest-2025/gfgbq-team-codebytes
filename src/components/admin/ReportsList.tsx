@@ -13,6 +13,7 @@ interface Issue {
   description: string;
   issue_type: string;
   status: string;
+  priority: string | null;
   location_address: string | null;
   latitude: number | null;
   longitude: number | null;
@@ -50,16 +51,20 @@ const getStatusBadge = (status: string) => {
   return <Badge variant={config.variant}>{config.label}</Badge>;
 };
 
-const getPriorityBadge = (issueType: string) => {
-  const priorityMap: Record<string, { color: string; label: string }> = {
-    pothole: { color: "bg-red-100 text-red-700", label: "High" },
-    streetlight: { color: "bg-yellow-100 text-yellow-700", label: "Medium" },
-    garbage: { color: "bg-green-100 text-green-700", label: "Low" },
-    water: { color: "bg-red-100 text-red-700", label: "High" },
-    drainage: { color: "bg-yellow-100 text-yellow-700", label: "Medium" },
+const getPriorityBadge = (priority: string | null) => {
+  // Use actual priority from database, fallback to Medium if not set
+  const priorityValue = priority || "Medium Priority";
+  
+  // Map priority levels to badge colors and labels
+  const priorityConfig: Record<string, { color: string; label: string }> = {
+    "Urgent": { color: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400", label: "Urgent" },
+    "High Priority": { color: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400", label: "High" },
+    "Medium Priority": { color: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400", label: "Medium" },
+    "Low Priority": { color: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400", label: "Low" },
   };
-  const priority = priorityMap[issueType] || { color: "bg-gray-100 text-gray-700", label: "Medium" };
-  return <Badge className={priority.color}>{priority.label}</Badge>;
+  
+  const config = priorityConfig[priorityValue] || { color: "bg-gray-100 text-gray-700", label: "Medium" };
+  return <Badge className={config.color}>{config.label}</Badge>;
 };
 
 const ReportsList = ({ issues, onUpdateStatus, onAssign }: ReportsListProps) => {
@@ -170,7 +175,7 @@ const ReportsList = ({ issues, onUpdateStatus, onAssign }: ReportsListProps) => 
                     </div>
                     <div className="flex gap-2 mt-3">
                       {getStatusBadge(issue.status)}
-                      {getPriorityBadge(issue.issue_type)}
+                      {getPriorityBadge(issue.priority)}
                       {issue.assigned_department && (
                         <Badge variant="outline" className="bg-primary/5">
                           Assigned
