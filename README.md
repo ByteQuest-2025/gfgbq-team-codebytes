@@ -1,6 +1,36 @@
+1.**Problem Statement**
+
+  Public governance bodies receive thousands of citizen grievances every day, covering issues such as civic
+infrastructure, sanitation, public safety, utilities, healthcare, education, and administrative delays.
+These complaints are typically:
+Unstructured (free-text, voice notes, mixed languages)
+Manually reviewed and routed
+Slow to resolve, leading to backlogs, citizen dissatisfaction, and lack of accountability
+  The absence of intelligent prioritization and analysis causes critical grievances to be delayed, while
+authorities struggle to gain actionable insights from large volumes of complaint data.
+  There is a pressing need for an AI-powered grievance redressal system that can intelligently understand,
+categorize, and prioritize citizen complaints to enable faster, fairer, and more transparent governance.
+2. **Project name**
+  Crowdsourced Civic lssues Reporting and Resolution System
+3. **Team name :**
+  CODE BYTES
+4.**Video Link**
+  https://drive.google.com/file/d/1qbYTghJbCwyMzXN4TZhQgC0NzvUtykdE/view?usp=sharing
+5.**PPT Link**
+  https://docs.google.com/presentation/d/1vn5pmQ0WazLHxONKAcyOk3dcWfkbjWBp/edit?usp=sharing&ouid=117170236727599700777&rtpof=true&sd=true
+
+
+**Description**
+
+An AI-powered, mobile and web-based grievance redressal platform that enables citizens to report and track civic and public governance issues such as infrastructure faults, sanitation problems, public safety concerns, utilities, healthcare, education, and administrative delays. The system intelligently analyzes unstructured complaints (text, voice, images, mixed languages) using NLP and automation to classify, prioritize, and route grievances based on urgency, severity, and impact.
+
+Citizens can submit complaints with photo/video proof, GPS location, and voice or text input, while tracking progress in real time through transparent status updates and an interactive live map. Government authorities access a centralized admin dashboard with analytics, trend insights, and automated task assignment to reduce backlogs and improve accountability.
+
+By combining AI-driven prioritization, real-time tracking, smart insights, the app ensures faster resolution, fair handling of critical issues, and greater citizen participation, ultimately enabling more efficient, responsive, and transparent governance.
 
 
 **Use your preferred IDE**
+
 
 If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
@@ -47,7 +77,7 @@ This project is built with:
 - Tailwind CSS
 
 
-## Can I connect a custom domain to my Lovable project?
+## Can I connect a custom domain to my  project?
 
 Yes, you can!
 
