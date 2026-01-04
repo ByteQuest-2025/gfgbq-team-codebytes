@@ -88,7 +88,8 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 
 
 
-##Screenshots
+## **Screenshots**
+
 
 
 <img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/d9607370-cf1a-4adf-8f84-bc5dc22ca92b" />
@@ -115,6 +116,15 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 
 <img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/4e477566-fc46-4b1f-9904-930a4b86bf4f" />
 
+
+
+## **Login Credinals**
+
+
+![WhatsApp Image 2026-01-04 at 1 35 53 PM](https://github.com/user-attachments/assets/78a84bb9-0c4a-48d6-a1b7-b541350b048c)
+
+password - 123456
+for all email use this password
 
 
 
