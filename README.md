@@ -85,6 +85,7 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
 
+**Screenshots**
 
 <img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/4120f935-fee6-4e34-ab27-eac5c39d1779" />
 
