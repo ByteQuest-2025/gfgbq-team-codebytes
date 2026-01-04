@@ -85,7 +85,43 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
 
-**Screenshots**
 
-<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/4120f935-fee6-4e34-ab27-eac5c39d1779" />
+
+
+##Screenshots
+
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/d9607370-cf1a-4adf-8f84-bc5dc22ca92b" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/07ca8d77-5a01-484e-a8ee-201b8b1742ba" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/8e432155-84d5-4c15-8a11-f9c2dfdac3a8" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/82a291d6-5151-4d2e-96a5-6f6d1f5c4cda" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/77aa4fa7-b57d-4124-a5de-c67b11a2457c" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/8e7ae3c7-5c16-48ca-a2d8-dc6e6b65a7d7" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/bbf07ece-2c99-4ab3-ab3d-9942ceb24076" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/802392f2-0b0e-451a-be17-2c46313e5389" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/6d19ea63-1483-4e1f-b75d-7b0908009828" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/4ebd7cc4-db68-4006-8e11-0c00112332b9" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/23ce91bf-80c0-46a5-bae2-5e0727f6e6b1" />
+
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/4e477566-fc46-4b1f-9904-930a4b86bf4f" />
+
+
+
+
+
+
+
+
+
+
 
