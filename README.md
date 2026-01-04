@@ -10,12 +10,20 @@ Slow to resolve, leading to backlogs, citizen dissatisfaction, and lack of accou
 authorities struggle to gain actionable insights from large volumes of complaint data.
   There is a pressing need for an AI-powered grievance redressal system that can intelligently understand,
 categorize, and prioritize citizen complaints to enable faster, fairer, and more transparent governance.
+
+
 2. **Project name**
   Crowdsourced Civic lssues Reporting and Resolution System
-3. **Team name :**
+
+
+4. **Team name :**
   CODE BYTES
+
+
 4.**Video Link**
   https://drive.google.com/file/d/1qbYTghJbCwyMzXN4TZhQgC0NzvUtykdE/view?usp=sharing
+
+  
 5.**PPT Link**
   https://docs.google.com/presentation/d/1vn5pmQ0WazLHxONKAcyOk3dcWfkbjWBp/edit?usp=sharing&ouid=117170236727599700777&rtpof=true&sd=true
 
